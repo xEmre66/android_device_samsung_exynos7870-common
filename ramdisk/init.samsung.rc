@@ -967,16 +967,6 @@ service edmaudit /system/bin/edmaudit
 
 ## WTL_EDM_END
 
-service drm /system/bin/drmserver
-    class main
-    user drm
-# [ SEC_MM_DRM
-# fix
-    group system drm inet drmrpc readproc dpgp
-# org
-#    group drm system inet drmrpc
-# ]
-
 service scs /system/bin/scs
     class main
     user system
