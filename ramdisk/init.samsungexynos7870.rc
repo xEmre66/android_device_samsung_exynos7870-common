@@ -910,3 +910,10 @@ on property:ro.wsmd.enable=true
     chmod 0711 /dev/socket/wsm_socket
     chown system system /dev/socket/wsm_socket
     start wsmd
+
+service cameraserver /system/bin/cameraserver
+    class main
+    user cameraserver
+    group media_rw audio camera drmrpc inet shell sdcard_r system
+    ioprio rt 4
+    writepid /dev/cpuset/foreground/tasks
