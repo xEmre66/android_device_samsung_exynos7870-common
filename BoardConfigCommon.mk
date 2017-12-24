@@ -110,6 +110,10 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 CHARGING_ENABLED_PATH := /sys/class/power_supply/battery/batt_lp_charging
 
+#Recovery
+BOARD_HAS_DOWNLOAD_MODE := true
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.samsungexynos7870
+
 # RIL
 BOARD_VENDOR := samsung
 BOARD_MODEM_TYPE := ss333
