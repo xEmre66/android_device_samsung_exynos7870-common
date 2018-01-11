@@ -22,5 +22,8 @@ TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 # Seccomp filters
 BOARD_SECCOMP_POLICY := $(LOCAL_PATH)/seccomp
 
+# SELinux
+BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+
 # inherit the splitted configs
 -include $(LOCAL_PATH)/board/*.mk
