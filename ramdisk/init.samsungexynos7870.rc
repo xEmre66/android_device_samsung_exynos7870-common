@@ -769,11 +769,6 @@ on fs
 
 #ARGOSD network_throughput
     chown system system /dev/network_throughput
-# ARGOSD
-service argos-daemon /system/bin/argosd
-    class main
-    user system
-    group system radio
 
 on property:ro.bootmode=charger
     wait /dev/block/platform/13540000.dwmmc0/by-name/EFS
@@ -806,27 +801,11 @@ service start_hci_filter /system/bin/wcnss_filter
     group bluetooth qcom_diag
     disabled
 
-# MobiCore startup
-#service mobicore /system/bin/mcDriverDaemon -r /system/app/020a0000000000000000000000000000.drbin -r /system/app/mcRegistry/FFFFFFFFD00000000000000000000016.tlbin
-#    user drmrpc
-#    group drmrpc
-#    class core
-
 # FINGERPRINT FRAMEWORK : starts fingerprintd
 service fingerprintd /system/bin/fingerprintd
     class late_start
     user system
     group system
-
-# RPMB daemon
-service rpmbd /system/bin/rpmbd
-     user root
-     group drmrpc
-     class main
-
-on property:sys.mobicoredaemon.enable=true
-    start cs_service
-    write /proc/iccc_ready 1
 
 on property:ro.multisim.simslotcount=1
     setprop persist.radio.multisim.config ss
@@ -834,35 +813,11 @@ on property:ro.multisim.simslotcount=1
 on property:ro.multisim.simslotcount=2
     setprop persist.radio.multisim.config dsds
 
-# Modem boot daemon
-#    service cpboot-daemon /system/bin/cbd -d
-#    class main
-#    user root
-#    group radio cache inet misc audio sdcard_rw log
-
-# DM daemon
-#    service DM-daemon /system/bin/dmd
-#    class main
-#    user root
-#    group system
-
 # VC daemon
     service VC-daemon /system/bin/vcd
     class main
     user root
     group system
-
-# SCE daemon
-#    service SCE-daemon /system/bin/sced
-#    class main
-#    user root
-#    group system
-
-# diag daemon
-#    service DM-daemon /system/bin/diagexe
-#    class main
-#    user root
-#    group system
 
 service fuse_sdcard /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard /storage/sdcard
     class late_start
@@ -870,13 +825,6 @@ service fuse_sdcard /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard /
 service fuse_usb1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usb1 /storage/usb1
     class late_start
     disabled
-
-# IPSec for VOLTE
-service ipsec-daemon /system/bin/IPSecService
-    class main
-    socket ipsec_socket stream 660 system net_admin
-    user system
-    group system net_raw inet net_admin
 
 # on userdebug and eng builds, enable kgdb on the serial console
 on property:ro.debuggable=1
@@ -962,10 +910,3 @@ on property:ro.wsmd.enable=true
     chmod 0711 /dev/socket/wsm_socket
     chown system system /dev/socket/wsm_socket
     start wsmd
-
-# IMS Stack
-service imsd /system/bin/imsd
-    class main
-    socket imsd stream 0660 system system
-    user root
-    group system radio net_raw inet net_admin readproc
