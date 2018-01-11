@@ -1,4 +1,3 @@
-#
 # Copyright (C) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +11,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-LOCAL_PATH := device/samsung/exynos7870-common
+import re
 
-# Include path
-TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
+def FullOTA_Assertions(info):
+  AddBootloaderAssertion(info, info.input_zip)
 
-# Release tools
-TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)
 
-# Seccomp filters
-BOARD_SECCOMP_POLICY := $(LOCAL_PATH)/seccomp
+def IncrementalOTA_Assertions(info):
+  AddBootloaderAssertion(info, info.target_zip)
 
-# SELinux
-BOARD_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
 
-# inherit the splitted configs
--include $(LOCAL_PATH)/board/*.mk
+def AddBootloaderAssertion(info, input_zip):
+  android_info = input_zip.read("OTA/android-info.txt")
+  m = re.search(r"require\s+version-bootloader\s*=\s*(\S+)", android_info)
+  if m:
+    bootloaders = m.group(1).split("|")
+    if "*" not in bootloaders:
+      info.script.AssertSomeBootloader(*bootloaders)
+    info.metadata["pre-bootloader"] = m.group(1)
