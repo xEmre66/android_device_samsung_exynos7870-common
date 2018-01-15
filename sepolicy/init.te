@@ -37,3 +37,5 @@ allow init debugfs_trace_marker:file getattr;
 allow init socket_device:sock_file { create setattr };
 
 allow init socket_device:sock_file { create setattr unlink };
+
+allow init sysfs:dir { write read };
