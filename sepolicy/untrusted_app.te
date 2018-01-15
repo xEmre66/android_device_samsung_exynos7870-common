@@ -1,3 +1,7 @@
 allow untrusted_app battery_service:service_manager find;
 allow untrusted_app device:dir read;
 allow untrusted_app untrusted_app:udp_socket ioctl;
+
+allow untrusted_app debugfs:dir { open read };
+allow untrusted_app system_data_file:dir remove_name;
+allow untrusted_app system_data_file:file { getattr read };
