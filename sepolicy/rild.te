@@ -42,3 +42,5 @@ allow rild self:capability chown;
 
 allow rild audioserver:dir search;
 allow rild audioserver:file { read open getattr };
+
+allow rild self:capability dac_read_search;

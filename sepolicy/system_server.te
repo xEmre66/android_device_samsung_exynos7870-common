@@ -35,3 +35,7 @@ allow system_server batch_io_device:chr_file { open read write ioctl };
 allow system_server app_efs_file:dir search;
 
 allow system_server debugfs:dir { read open };
+
+allow system_server gps_data_file:file { create open write };
+allow system_server socket_device:sock_file write;
+

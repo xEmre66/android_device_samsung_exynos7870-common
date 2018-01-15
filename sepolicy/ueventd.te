@@ -5,3 +5,5 @@ allow ueventd emmcblk_device:blk_file create_file_perms;
 allow ueventd sysfs_multipdp_writable:file rw_file_perms;
 
 allow ueventd camera_device:file { relabelto getattr write open };
+
+allow ueventd emmcblk_device:blk_file { relabelfrom relabelto };

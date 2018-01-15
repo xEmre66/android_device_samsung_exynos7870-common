@@ -32,3 +32,7 @@ allow init camera_device:lnk_file { relabelto };
 allow init camera_device:dir { relabelto };
 allow init debugfs:file write;
 allow init efs_file:dir mounton;
+
+allow init debugfs_trace_marker:file getattr;
+allow init socket_device:sock_file { create setattr };
+

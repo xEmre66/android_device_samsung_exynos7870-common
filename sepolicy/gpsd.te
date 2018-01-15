@@ -19,3 +19,6 @@ allow gpsd gps_data_file:fifo_file { unlink create write read setattr getattr rw
 allow gpsd sysfs_wake_lock:file rw_file_perms;
 
 allow gpsd sensorservice_service:service_manager { find };
+
+allow gpsd mif_device:chr_file { ioctl open read };
+
