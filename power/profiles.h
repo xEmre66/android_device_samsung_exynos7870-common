@@ -83,14 +83,6 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
-		.hmp = {
-			.boost = false,
-			.semiboost = false,
-			.sb_down_thres = 150,
-			.sb_up_thres = 400,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
-		},
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 100,
@@ -116,14 +108,6 @@ struct power_profile {
 				.freq_max = 200000,
 				.freq_min = 200000,
 			},
-		},
-		.hmp = {
-			.boost = false,
-			.semiboost = false,
-			.sb_down_thres = 150,
-			.sb_up_thres = 400,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 100,
@@ -151,14 +135,6 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
-		.hmp = {
-			.boost = false,
-			.semiboost = false,
-			.sb_down_thres = 150,
-			.sb_up_thres = 400,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
-		},
 		.gpu = {
 			.min_lock = 100,
 			.max_lock = 544,
@@ -184,14 +160,6 @@ struct power_profile {
 				.freq_max = 2100000,
 				.freq_min = 400000,
 			},
-		},
-		.hmp = {
-			.boost = false,
-			.semiboost = true,
-			.sb_down_thres = 125,
-			.sb_up_thres = 175,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
 		},
 		.gpu = {
 			.min_lock = 266,
@@ -219,14 +187,6 @@ struct power_profile {
 				.freq_min = 800000,
 			},
 		},
-		.hmp = {
-			.boost = true,
-			.semiboost = false,
-			.sb_down_thres = 75,
-			.sb_up_thres = 125,
-			.active_down_migration = false,
-			.aggressive_up_migration = true,
-		},
 		.gpu = {
 			.min_lock = 600,
 			.max_lock = 772,
@@ -253,14 +213,6 @@ struct power_profile {
 				.freq_min = 200000,
 			},
 		},
-		.hmp = {
-			.boost = false,
-			.semiboost = false,
-			.sb_down_thres = 150,
-			.sb_up_thres = 400,
-			.active_down_migration = true,
-			.aggressive_up_migration = false,
-		},
 		.gpu = {
 			.min_lock = 160,
 			.max_lock = 600,
@@ -286,14 +238,6 @@ struct power_profile {
 				.freq_max = 2200000,
 				.freq_min = 600000,
 			},
-		},
-		.hmp = {
-			.boost = false,
-			.semiboost = true,
-			.sb_down_thres = 75,
-			.sb_up_thres = 125,
-			.active_down_migration = false,
-			.aggressive_up_migration = true,
 		},
 		.gpu = {
 			.min_lock = 544,
