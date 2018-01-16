@@ -216,16 +216,16 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	pfwritegov(0, "freq_min",     data.cpu.cl0.freq_min); /* Core, File, Value */
-	pfwritegov(0, "freq_max",     data.cpu.cl0.freq_max);
-	pfwritegov(0, "hispeed_freq", data.cpu.cl0.freq_max);
+	pfwritegov(0, "/scaling_min_freq",     data.cpu.cl0.freq_min); /* Core, File, Value */
+	pfwritegov(0, "/scaling_max_freq",     data.cpu.cl0.freq_max);
+//	pfwritegov(0, "hispeed_freq",          data.cpu.cl0.freq_max);
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	pfwritegov(4, "freq_min",     data.cpu.cl1.freq_min); /* Core, File, Value */
-	pfwritegov(4, "freq_max",     data.cpu.cl1.freq_max);
-	pfwritegov(4, "hispeed_freq", data.cpu.cl1.freq_max);
+	pfwritegov(4, "/scaling_min_freq",     data.cpu.cl1.freq_min); /* Core, File, Value */
+	pfwritegov(4, "/scaling_max_freq",     data.cpu.cl1.freq_max);
+//	pfwritegov(4, "hispeed_freq",          data.cpu.cl1.freq_max);
 
 	/*********************
 	 * GPU
@@ -437,16 +437,10 @@ static bool pfwrite(string path, unsigned int value) {
 }
 
 static bool pfwritegov(int core, string file, string str) {
-	string cpugov;
 	ostringstream path;
 	ostringstream cpugov_path;
 
-	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq";
-	cpugov_path << path.str() << "/scaling_governor";
-
-	pfread(cpugov_path.str(), cpugov);
-
-	path << "/" << cpugov << "/" << file;
+	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq" << path << "/" << file;
 
 	if (!is_file(path.str())) {
 		return false;
