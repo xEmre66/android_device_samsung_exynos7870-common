@@ -39,9 +39,9 @@ using namespace std;
 #define INPUT_STATE_DISABLE    0
 #define INPUT_STATE_ENABLE     1
 
-#define POWER_CONFIG_PROFILES        "/data/power/profiles"
-#define POWER_CONFIG_BOOST           "/data/power/boost"
-#define POWER_CONFIG_FP_ALWAYS_ON    "/data/power/fp_always_on"
+#define POWER_CONFIG_PROFILES        "/data/.power/profiles"
+#define POWER_CONFIG_BOOST           "/data/.power/boost"
+#define POWER_CONFIG_FP_ALWAYS_ON    "/data/.power/fp_always_on"
 
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input6/enabled"

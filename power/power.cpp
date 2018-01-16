@@ -107,8 +107,8 @@ static void power_init(struct power_module __unused * module) {
 	power_input_device_state(1);
 
 	// set the default settings
-	if (!is_dir("/data/power"))
-		mkdir("/data/power", 0771);
+	if (!is_dir("/data/.power"))
+		mkdir("/data/.power", 0777);
 }
 
 /***********************************
