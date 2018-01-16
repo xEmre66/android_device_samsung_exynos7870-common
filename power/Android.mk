@@ -25,7 +25,7 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES := \
 	power.cpp
 
-LOCAL_MODULE               := power.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE               := power.$(TARGET_BOOTLOADER_BOARD_NAME)
 LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_MODULE_TAGS          := optional
 LOCAL_CFLAGS               := -Wall -Werror -Wno-unused-parameter

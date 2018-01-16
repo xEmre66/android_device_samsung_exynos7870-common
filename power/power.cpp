@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "power.exynos5"
+#define LOG_TAG "power.universal7870"
 #define LOG_NDEBUG 0
 
 #include <atomic>
