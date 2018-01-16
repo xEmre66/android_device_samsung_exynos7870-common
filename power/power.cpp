@@ -206,15 +206,15 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * CPU Cluster0
 	 */
-	pfwritegov(0, "/scaling_min_freq",     data.cpu.cl0.freq_min); /* Core, File, Value */
-	pfwritegov(0, "/scaling_max_freq",     data.cpu.cl0.freq_max);
+	pfwritegov(0, "scaling_min_freq",     data.cpu.cl0.freq_min); /* Core, File, Value */
+	pfwritegov(0, "scaling_max_freq",     data.cpu.cl0.freq_max);
 //	pfwritegov(0, "hispeed_freq",          data.cpu.cl0.freq_max);
 
 	/*********************
 	 * CPU Cluster1
 	 */
-	pfwritegov(4, "/scaling_min_freq",     data.cpu.cl1.freq_min); /* Core, File, Value */
-	pfwritegov(4, "/scaling_max_freq",     data.cpu.cl1.freq_max);
+	pfwritegov(4, "scaling_min_freq",     data.cpu.cl1.freq_min); /* Core, File, Value */
+	pfwritegov(4, "scaling_max_freq",     data.cpu.cl1.freq_max);
 //	pfwritegov(4, "hispeed_freq",          data.cpu.cl1.freq_max);
 
 	/*********************
@@ -364,7 +364,7 @@ static bool pfwritegov(int core, string file, string str) {
 	ostringstream path;
 	ostringstream cpugov_path;
 
-	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq" << path << "/" << file;
+	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq" << "/" << file;
 
 	if (!is_file(path.str())) {
 		return false;
@@ -405,6 +405,7 @@ static bool pfread(string path, int *v) {
 	return true;
 }
 
+/*
 static bool pfread(string path, string &str) {
 	ifstream file(path);
 
@@ -421,6 +422,7 @@ static bool pfread(string path, string &str) {
 	file.close();
 	return true;
 }
+*/
 
 // legacy I/O
 static bool pfwrite_legacy(string path, string str) {

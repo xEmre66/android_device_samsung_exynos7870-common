@@ -66,6 +66,7 @@ struct power_profile {
 
 	int ipa_control_temp;
 	bool power_efficient_workqueue;
+   bool hotplug;
 
 } power_profiles[PROFILE_MAX_USABLE + 2] = {
 
