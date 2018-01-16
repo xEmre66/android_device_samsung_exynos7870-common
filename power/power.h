@@ -39,13 +39,11 @@ using namespace std;
 #define INPUT_STATE_DISABLE    0
 #define INPUT_STATE_ENABLE     1
 
-#define POWER_CONFIG_DT2W            "/data/power/dt2w"
 #define POWER_CONFIG_PROFILES        "/data/power/profiles"
 #define POWER_CONFIG_BOOST           "/data/power/boost"
 #define POWER_CONFIG_FP_ALWAYS_ON    "/data/power/fp_always_on"
 #define POWER_CONFIG_FP_WAKELOCKS    "/data/power/fp_wakelocks"
 
-#define POWER_DT2W_ENABLED            "/sys/android_touch/doubletap2wake"
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input6/enabled"
 #define POWER_TOUCHKEYS_BRIGTHNESS    "/sys/class/sec/sec_touchkey/brightness"
@@ -85,7 +83,6 @@ static void power_set_interactive(struct power_module __unused * module, int on)
  * Features
  */
 static int power_get_feature(struct power_module *module __unused, feature_t feature);
-static void power_set_feature(struct power_module *module, feature_t feature, int state);
 
 /***********************************
  * Utilities
@@ -105,7 +102,6 @@ static bool pfread(string path, string &str);
 // legacy I/O
 static bool pfwrite_legacy(string path, string str);
 static bool pfwrite_legacy(string path, int value);
-static bool pfwrite_legacy(string path, bool flag);
 
 // I/O-helpers
 static bool is_dir(string path);

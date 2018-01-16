@@ -76,7 +76,6 @@ static int power_open(const hw_module_t __unused * module, const char *name, hw_
 			dev->init = power_init;
 			dev->powerHint = power_hint;
 			dev->getFeature = power_get_feature;
-			dev->setFeature = power_set_feature;
 			dev->setInteractive = power_set_interactive;
 
 			*device = (hw_device_t *)dev;
@@ -97,9 +96,6 @@ static void power_init(struct power_module __unused * module) {
 
 	if (!is_file(POWER_CONFIG_FP_WAKELOCKS))
 		pfwrite(POWER_CONFIG_FP_WAKELOCKS, false);
-
-	if (!is_file(POWER_CONFIG_DT2W))
-		pfwrite(POWER_CONFIG_DT2W, false);
 
 	if (!is_file(POWER_CONFIG_BOOST))
 		pfwrite(POWER_CONFIG_BOOST, true);
@@ -300,15 +296,8 @@ static void power_fingerprint_state(bool state) {
 }
  
 static void power_input_device_state(int state) {
-	int dt2w = 0, dt2w_sysfs = 0;
-
-	pfread(POWER_CONFIG_DT2W, &dt2w);
-	pfread(POWER_DT2W_ENABLED, &dt2w_sysfs);
-
 #if LOG_NDEBUG
 	ALOGD("%s: state         = %d", __func__, state);
-	ALOGD("%s: dt2w          = %d", __func__, dt2w);
-	ALOGD("%s: dt2w_sysfs    = %d", __func__, dt2w_sysfs);
 #endif
 
 	switch (state) {
@@ -339,12 +328,6 @@ static void power_input_device_state(int state) {
 			break;
 	}
 
-	if (dt2w) {
-		pfwrite_legacy(POWER_DT2W_ENABLED, true);
-	} else {
-		pfwrite_legacy(POWER_DT2W_ENABLED, false);
-	}
-
 	// give hw some milliseconds to properly boot up
 	usleep(100 * 1000); // 100ms
 }
@@ -373,31 +356,8 @@ static int power_get_feature(struct power_module *module __unused, feature_t fea
 		case POWER_FEATURE_SUPPORTED_PROFILES:
 			ALOGD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
 			return PROFILE_MAX_USABLE;
-		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGD("%s: request for POWER_FEATURE_DOUBLE_TAP_TO_WAKE = 1", __func__);
-			return 1;
 		default:
 			return -EINVAL;
-	}
-}
-
-static void power_set_feature(struct power_module *module, feature_t feature, int state) {
-	switch (feature) {
-		case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
-			ALOGD("%s: set POWER_FEATURE_DOUBLE_TAP_TO_WAKE to \"%d\"", __func__, state);
-			if (state) {
-				pfwrite(POWER_CONFIG_DT2W, true);
-				pfwrite_legacy(POWER_DT2W_ENABLED, true);
-			} else {
-				pfwrite(POWER_CONFIG_DT2W, false);
-				pfwrite_legacy(POWER_DT2W_ENABLED, false);
-			}
-			break;
-
-		default:
-			ALOGW("Error setting the feature %d and state %d, it doesn't exist\n",
-				  feature, state);
-		break;
 	}
 }
 
@@ -523,10 +483,6 @@ static bool pfwrite_legacy(string path, int value) {
 	return pfwrite_legacy(path, to_string(value));
 }
 
-static bool pfwrite_legacy(string path, bool flag) {
-	return pfwrite_legacy(path, flag ? 1 : 0);
-}
-
 // existence-helpers
 static bool is_dir(string path) {
 	struct stat fstat;
@@ -563,7 +519,6 @@ struct sec_power_module HAL_MODULE_INFO_SYM = {
 		.init = power_init,
 		.powerHint = power_hint,
 		.getFeature = power_get_feature,
-		.setFeature = power_set_feature,
 		.setInteractive = power_set_interactive,
 	},
 
