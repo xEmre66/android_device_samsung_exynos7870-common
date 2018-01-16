@@ -230,8 +230,8 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * GPU
 	 */
-	pfwrite("/sys/devices/14ac0000.mali/dvfs_min_lock", data.gpu.min_lock);
-	pfwrite("/sys/devices/14ac0000.mali/dvfs_max_lock", data.gpu.max_lock);
+	pfwrite("/sys/devices/11400000.mali/dvfs_min_lock", data.gpu.min_lock);
+	pfwrite("/sys/devices/11400000.mali/dvfs_max_lock", data.gpu.max_lock);
 
 	/*********************
 	 * Input
@@ -243,7 +243,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * Generic Settings
 	 */
-	pfwrite("/sys/power/enable_dm_hotplug", false);
+	pfwrite("/sys/power/cpuhotplug/enable", false);
 	pfwrite("/sys/power/ipa/control_temp", data.ipa_control_temp);
 	pfwrite("/sys/module/workqueue/parameters/power_efficient", data.power_efficient_workqueue);
 }
