@@ -75,17 +75,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 400000,
-				.freq_min = 200000,
+				.freq_max = 757000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 400000,
-				.freq_min = 200000,
+				.freq_max = 757000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 100,
-			.max_lock = 100,
+			.min_lock = 343,
+			.max_lock = 545,
 		},
 		.input = {
 			.booster = false,
@@ -101,17 +101,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 400000,
-				.freq_min = 200000,
+				.freq_max = 757000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 200000,
-				.freq_min = 200000,
+				.freq_max = 757000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 100,
-			.max_lock = 266,
+			.min_lock = 343,
+			.max_lock = 545,
 		},
 		.input = {
 			.booster = false,
@@ -127,17 +127,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 1300000,
-				.freq_min = 400000,
+				.freq_max = 1014000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 1900000,
-				.freq_min = 200000,
+				.freq_max = 1014000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 100,
-			.max_lock = 544,
+			.min_lock = 343,
+			.max_lock = 545,
 		},
 		.input = {
 			.booster = true,
@@ -153,17 +153,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 1500000,
-				.freq_min = 600000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 2100000,
-				.freq_min = 400000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 266,
-			.max_lock = 700,
+			.min_lock = 343,
+			.max_lock = 845,
 		},
 		.input = {
 			.booster = true,
@@ -179,17 +179,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 1704000,
-				.freq_min = 1000000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 2304000,
-				.freq_min = 800000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 600,
-			.max_lock = 772,
+			.min_lock = 343,
+			.max_lock = 1001,
 		},
 		.input = {
 			.booster = true,
@@ -205,17 +205,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 1400000,
-				.freq_min = 400000,
+				.freq_max = 1014000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 2000000,
-				.freq_min = 200000,
+				.freq_max = 1014000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 160,
-			.max_lock = 600,
+			.min_lock = 343,
+			.max_lock = 545,
 		},
 		.input = {
 			.booster = true,
@@ -231,17 +231,17 @@ struct power_profile {
 	{
 		.cpu = {
 			.cl0 = {
-				.freq_max = 1600000,
-				.freq_min = 800000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 			.cl1 = {
-				.freq_max = 2200000,
-				.freq_min = 600000,
+				.freq_max = 1586000,
+				.freq_min = 546000,
 			},
 		},
 		.gpu = {
-			.min_lock = 544,
-			.max_lock = 772,
+			.min_lock = 343,
+			.max_lock = 1001,
 		},
 		.input = {
 			.booster = true,
