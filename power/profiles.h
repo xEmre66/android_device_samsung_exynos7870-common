@@ -91,7 +91,6 @@ struct power_profile {
 			.booster = false,
 			.booster_table = "0 0 0 0 0 0"
 		},
-		.ipa_control_temp = 35,
 		.power_efficient_workqueue = true,
 	},
 
@@ -117,7 +116,6 @@ struct power_profile {
 			.booster = false,
 			.booster_table = "0 0 0 0 0 0"
 		},
-		.ipa_control_temp = 40,
 		.power_efficient_workqueue = true,
 	},
 
@@ -143,7 +141,6 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 400000 0 0 0"
 		},
-		.ipa_control_temp = 45,
 		.power_efficient_workqueue = true,
 	},
 
@@ -169,7 +166,6 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 800000 0 0 0"
 		},
-		.ipa_control_temp = 65,
 		.power_efficient_workqueue = true,
 	},
 
@@ -195,7 +191,6 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1200000 0 0 0"
 		},
-		.ipa_control_temp = 75,
 		.power_efficient_workqueue = false,
 	},
 
@@ -221,7 +216,6 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 600000 0 0 0"
 		},
-		.ipa_control_temp = 55,
 		.power_efficient_workqueue = true,
 	},
 
@@ -247,7 +241,6 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1000000 0 0 0"
 		},
-		.ipa_control_temp = 70,
 		.power_efficient_workqueue = false,
 	},
 
