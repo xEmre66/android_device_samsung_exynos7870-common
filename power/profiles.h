@@ -91,6 +91,7 @@ struct power_profile {
 			.booster = false,
 			.booster_table = "0 0 0 0 0 0"
 		},
+		.hotplug = true,
 		.power_efficient_workqueue = true,
 	},
 
@@ -116,6 +117,7 @@ struct power_profile {
 			.booster = false,
 			.booster_table = "0 0 0 0 0 0"
 		},
+		.hotplug = true,
 		.power_efficient_workqueue = true,
 	},
 
@@ -141,6 +143,7 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 400000 0 0 0"
 		},
+		.hotplug = true,
 		.power_efficient_workqueue = true,
 	},
 
@@ -166,6 +169,7 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 800000 0 0 0"
 		},
+		.hotplug = true,
 		.power_efficient_workqueue = true,
 	},
 
@@ -191,6 +195,7 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1200000 0 0 0"
 		},
+		.hotplug = false,
 		.power_efficient_workqueue = false,
 	},
 
@@ -216,6 +221,7 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 600000 0 0 0"
 		},
+		.hotplug = true,
 		.power_efficient_workqueue = true,
 	},
 
@@ -241,6 +247,7 @@ struct power_profile {
 			.booster = true,
 			.booster_table = "300 0 1000000 0 0 0"
 		},
+		.hotplug = false,
 		.power_efficient_workqueue = false,
 	},
 

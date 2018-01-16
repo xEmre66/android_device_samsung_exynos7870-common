@@ -236,7 +236,7 @@ static void power_set_profile(int profile) {
 	/*********************
 	 * Generic Settings
 	 */
-	pfwrite("/sys/power/cpuhotplug/enable", false);
+	pfwrite("/sys/power/cpuhotplug/enable", data.hotplug);
 	pfwrite("/sys/module/workqueue/parameters/power_efficient", data.power_efficient_workqueue);
 }
 
