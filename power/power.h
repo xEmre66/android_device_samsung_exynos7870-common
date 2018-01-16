@@ -42,14 +42,10 @@ using namespace std;
 #define POWER_CONFIG_PROFILES        "/data/power/profiles"
 #define POWER_CONFIG_BOOST           "/data/power/boost"
 #define POWER_CONFIG_FP_ALWAYS_ON    "/data/power/fp_always_on"
-#define POWER_CONFIG_FP_WAKELOCKS    "/data/power/fp_wakelocks"
 
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input6/enabled"
 #define POWER_TOUCHKEYS_BRIGTHNESS    "/sys/class/sec/sec_touchkey/brightness"
-
-#define POWER_FINGERPRINT_REGULATOR    "/sys/class/fingerprint/fingerprint/regulator"
-#define POWER_FINGERPRINT_WAKELOCKS    "/sys/class/fingerprint/fingerprint/wakelocks"
 
 /***********************************
  * Initializing

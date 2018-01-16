@@ -94,9 +94,6 @@ static void power_init(struct power_module __unused * module) {
 	if (!is_file(POWER_CONFIG_FP_ALWAYS_ON))
 		pfwrite(POWER_CONFIG_FP_ALWAYS_ON, false);
 
-	if (!is_file(POWER_CONFIG_FP_WAKELOCKS))
-		pfwrite(POWER_CONFIG_FP_WAKELOCKS, false);
-
 	if (!is_file(POWER_CONFIG_BOOST))
 		pfwrite(POWER_CONFIG_BOOST, true);
 
@@ -270,28 +267,11 @@ static void power_boostpulse(int duration) {
  * Inputs
  */
 static void power_fingerprint_state(bool state) {
-	int fp_always_on = 0, fp_wakelocks = 1;
+	int fp_always_on = 0;
 
 	pfread(POWER_CONFIG_FP_ALWAYS_ON, &fp_always_on);
 	if (fp_always_on) {
 		return;
-	}
-
-	pfread(POWER_CONFIG_FP_WAKELOCKS, &fp_wakelocks);
-
-	/*
-	 * Ordered power toggling:
-	 *    Turn on:   +Wakelocks  ->  +Regulator
-	 *    Turn off:  -Regulator  ->  -Wakelocks
-	 */
-	if (state) {
-		pfwrite(POWER_FINGERPRINT_WAKELOCKS, true);
-		pfwrite(POWER_FINGERPRINT_REGULATOR, true);
-	} else {
-		pfwrite(POWER_FINGERPRINT_REGULATOR, false);
-
-		if (!fp_wakelocks)
-			pfwrite(POWER_FINGERPRINT_WAKELOCKS, false);
 	}
 }
  
