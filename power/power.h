@@ -46,8 +46,8 @@ using namespace std;
 #define POWER_CONFIG_FP_WAKELOCKS    "/data/power/fp_wakelocks"
 
 #define POWER_DT2W_ENABLED            "/sys/android_touch/doubletap2wake"
-#define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input0/enabled"
-#define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input1/enabled"
+#define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input1/enabled"
+#define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input6/enabled"
 #define POWER_TOUCHKEYS_BRIGTHNESS    "/sys/class/sec/sec_touchkey/brightness"
 
 #define POWER_FINGERPRINT_REGULATOR    "/sys/class/fingerprint/fingerprint/regulator"
