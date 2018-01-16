@@ -41,7 +41,6 @@ using namespace std;
 
 #define POWER_CONFIG_PROFILES        "/data/.power/profiles"
 #define POWER_CONFIG_BOOST           "/data/.power/boost"
-#define POWER_CONFIG_FP_ALWAYS_ON    "/data/.power/fp_always_on"
 
 #define POWER_TOUCHKEYS_ENABLED       "/sys/class/input/input1/enabled"
 #define POWER_TOUCHSCREEN_ENABLED     "/sys/class/input/input6/enabled"
@@ -71,7 +70,6 @@ static void power_boostpulse(int duration);
 /***********************************
  * Inputs
  */
-static void power_fingerprint_state(bool state);
 static void power_input_device_state(int state);
 static void power_set_interactive(struct power_module __unused * module, int on);
 
