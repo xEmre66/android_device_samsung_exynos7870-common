@@ -14,17 +14,7 @@
 # limitations under the License.
 #
 
-# Audio
+# USB
 PRODUCT_PACKAGES += \
-    audio.primary.universal7870 \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
-    tinymix \
-    libtinycompress \
-    android.hardware.audio@2.0-impl \
-    android.hardware.audio@2.0-service \
-    android.hardware.audio.effect@2.0-impl
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/audio/a2dp_audio_policy_configuration.xml:system/etc/a2dp_audio_policy_configuration.xml
+    android.hardware.usb@1.0-impl \
+    android.hardware.usb@1.0-service
