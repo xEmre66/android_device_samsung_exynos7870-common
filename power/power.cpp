@@ -39,7 +39,6 @@
 #include <utils/Log.h>
 
 #include "power.h"
-#include "profiles.h"
 
 using namespace std;
 
@@ -50,9 +49,6 @@ struct sec_power_module {
 
 #define container_of(addr, struct_name, field_name) \
 	((struct_name *)((char *)(addr) - offsetof(struct_name, field_name)))
-
-static int current_power_profile = PROFILE_BALANCED;
-static int requested_power_profile = PROFILE_BALANCED;
 
 static int input_state_touchkeys = 1;
 
@@ -75,7 +71,6 @@ static int power_open(const hw_module_t __unused * module, const char *name, hw_
 
 			dev->init = power_init;
 			dev->powerHint = power_hint;
-			dev->getFeature = power_get_feature;
 			dev->setInteractive = power_set_interactive;
 
 			*device = (hw_device_t *)dev;
@@ -91,21 +86,8 @@ static int power_open(const hw_module_t __unused * module, const char *name, hw_
 }
 
 static void power_init(struct power_module __unused * module) {
-	if (!is_file(POWER_CONFIG_BOOST))
-		pfwrite(POWER_CONFIG_BOOST, true);
-
-	if (!is_file(POWER_CONFIG_PROFILES))
-		pfwrite(POWER_CONFIG_PROFILES, true);
-
-	// set to normal power profile
-	power_set_profile(PROFILE_BALANCED);
-
 	// initialize all input-devices
 	power_input_device_state(1);
-
-	// set the default settings
-	if (!is_dir("/data/.power"))
-		mkdir("/data/.power", 0777);
 }
 
 /***********************************
@@ -118,211 +100,45 @@ static void power_hint(struct power_module *module, power_hint_t hint, void *dat
 	pthread_mutex_lock(&sec->lock);
 
 	switch (hint) {
-
-		/***********************************
-		 * Profiles
-		 */
-		case POWER_HINT_LOW_POWER:
-			ALOGI("%s: hint(POWER_HINT_LOW_POWER, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_set_profile(value ? PROFILE_POWER_SAVE : requested_power_profile);
-			break;
-
-		case POWER_HINT_SET_PROFILE:
-			ALOGI("%s: hint(POWER_HINT_SET_PROFILE, %d, %llu)", __func__, value, (unsigned long long)data);
-			requested_power_profile = value;
-			power_set_profile(value);
-			break;
-
-		case POWER_HINT_SUSTAINED_PERFORMANCE:
-		case POWER_HINT_VR_MODE:
-			if (hint == POWER_HINT_SUSTAINED_PERFORMANCE)
-				ALOGI("%s: hint(POWER_HINT_SUSTAINED_PERFORMANCE, %d, %llu)", __func__, value, (unsigned long long)data);
-			else if (hint == POWER_HINT_VR_MODE)
-				ALOGI("%s: hint(POWER_HINT_VR_MODE, %d, %llu)", __func__, value, (unsigned long long)data);
-
-			power_set_profile(value ? PROFILE_HIGH_PERFORMANCE : requested_power_profile);
-			break;
-
-#ifdef POWER_HAS_NEXUSOS_HINTS
-		case POWER_HINT_DREAMING_OR_DOZING:
-			ALOGI("%s: hint(POWER_HINT_DREAMING_OR_DOZING, %d, %llu)", __func__, value, (unsigned long long)data);
-			power_set_profile(value ? PROFILE_DREAMING_OR_DOZING : requested_power_profile);
-			break;
-#endif
-			
-		/***********************************
-		 * Boosting
-		 */
-		case POWER_HINT_INTERACTION:
-			// ALOGI("%s: hint(POWER_HINT_INTERACTION, %d, %llu)", __func__, value, (unsigned long long)data);
-
-			/* power_boostpulse(value ? value : 50000);
-			power_boostpulse(value ? value : 50000); */
-
-			break;
-
-        case POWER_HINT_CPU_BOOST:
-			// ALOGI("%s: hint(POWER_HINT_CPU_BOOST, %d, %llu)", __func__, value, (unsigned long long)data);
-
-			power_boostpulse(value);
-			power_boostpulse(value);
-
-			break;
-
-		/***********************************
-		 * Inputs
-		 */
 		case POWER_HINT_DISABLE_TOUCH:
 			ALOGI("%s: hint(POWER_HINT_DISABLE_TOUCH, %d, %llu)", __func__, value, (unsigned long long)data);
 			power_input_device_state(value ? 0 : 1);
 			break;
-
 		default: break;
 	}
 
 	pthread_mutex_unlock(&sec->lock);
 }
 
-/***********************************
- * Profiles
- */
-static void power_set_profile(int profile) {
-	int profiles = 1;
-
-	pfread(POWER_CONFIG_PROFILES, &profiles);
-	if (!profiles) {
-		ALOGD("%s: profiles disabled (tried to apply profile %d)", __func__, profile);
-		return;
-	}
-
- 	ALOGD("%s: apply profile %d", __func__, profile);
-
-	// store it
-	current_power_profile = profile;
-
-	// apply settings
-	struct power_profile data = power_profiles[current_power_profile + 2];
-
-	/*********************
-	 * CPU Cluster0
-	 */
-	pfwritegov(0, "scaling_min_freq",     data.cpu.cl0.freq_min); /* Core, File, Value */
-	pfwritegov(0, "scaling_max_freq",     data.cpu.cl0.freq_max);
-//	pfwritegov(0, "hispeed_freq",          data.cpu.cl0.freq_max);
-
-	/*********************
-	 * CPU Cluster1
-	 */
-	pfwritegov(4, "scaling_min_freq",     data.cpu.cl1.freq_min); /* Core, File, Value */
-	pfwritegov(4, "scaling_max_freq",     data.cpu.cl1.freq_max);
-//	pfwritegov(4, "hispeed_freq",          data.cpu.cl1.freq_max);
-
-	/*********************
-	 * GPU
-	 */
-	pfwrite("/sys/devices/11400000.mali/dvfs_min_lock", data.gpu.min_lock);
-	pfwrite("/sys/devices/11400000.mali/dvfs_max_lock", data.gpu.max_lock);
-
-	/*********************
-	 * Input
-	 */
-	pfwrite_legacy("/sys/class/input_booster/level", (data.input.booster ? 2 : 0));
-	pfwrite_legacy("/sys/class/input_booster/head", data.input.booster_table);
-	pfwrite_legacy("/sys/class/input_booster/tail", data.input.booster_table);
-	
-	/*********************
-	 * Generic Settings
-	 */
-	pfwrite("/sys/power/cpuhotplug/enable", data.hotplug);
-	pfwrite("/sys/module/workqueue/parameters/power_efficient", data.power_efficient_workqueue);
-}
-
-/***********************************
- * Boost
- */
-static void power_boostpulse(int duration) {
-	int boost = 0;
-
-	pfread(POWER_CONFIG_BOOST, &boost);
-	if (!boost) {
-		return;
-	}
-
-	// ALOGD("%s: duration     = %d", __func__, duration);
-
-	if (duration > 0) {
-		pfwritegov(0, "boostpulse_duration", duration);
-		pfwritegov(1, "boostpulse_duration", duration);
-	}
-
-	pfwritegov(0, "boostpulse", true);
-	pfwritegov(1, "boostpulse", true);
-}
-
-/***********************************
- * Inputs
- */
- 
 static void power_input_device_state(int state) {
 #if LOG_NDEBUG
-	ALOGD("%s: state         = %d", __func__, state);
+	ALOGD("%s: state = %d", __func__, state);
 #endif
 
 	switch (state) {
 		case INPUT_STATE_DISABLE:
-
 			// save to current state to prevent enabling
 			pfread(POWER_TOUCHKEYS_ENABLED, &input_state_touchkeys);
-
 			pfwrite(POWER_TOUCHSCREEN_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_ENABLED, false);
 			pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 0);
-
 			break;
 
 		case INPUT_STATE_ENABLE:
-
 			pfwrite(POWER_TOUCHSCREEN_ENABLED, true);
-
 			if (input_state_touchkeys) {
 				pfwrite(POWER_TOUCHKEYS_ENABLED, true);
 				pfwrite(POWER_TOUCHKEYS_BRIGTHNESS, 255);
 			}
-
 			break;
 	}
-
 	// give hw some milliseconds to properly boot up
 	usleep(100 * 1000); // 100ms
 }
 
 static void power_set_interactive(struct power_module __unused * module, int on) {
 	int screen_is_on = (on != 0);
-
-#if LOG_NDEBUG
-	ALOGD("%s: on = %d", __func__, on);
-#endif
-
-	if (!screen_is_on) {
-		power_set_profile(PROFILE_SCREEN_OFF);
-	} else {
-		power_set_profile(requested_power_profile);
-	}
-
 	power_input_device_state(screen_is_on);
-}
-
-/***********************************
- * Features
- */
-static int power_get_feature(struct power_module *module __unused, feature_t feature) {
-	switch (feature) {
-		case POWER_FEATURE_SUPPORTED_PROFILES:
-			ALOGD("%s: request for POWER_FEATURE_SUPPORTED_PROFILES = %d", __func__, PROFILE_MAX_USABLE);
-			return PROFILE_MAX_USABLE;
-		default:
-			return -EINVAL;
-	}
 }
 
 /***********************************
@@ -334,17 +150,17 @@ static bool pfwrite(string path, string str) {
 
 	file.open(path);
 	if (!file.is_open()) {
+#if LOG_NDEBUG
 		ALOGE("%s: failed to open %s", __func__, path.c_str());
+#endif
 		return false;
 	}
 
 #if LOG_NDEBUG
 	ALOGI("%s: store \"%s\" to %s", __func__, str.c_str(), path.c_str());
 #endif
-
 	file << str;
 	file.close();
-
 	return true;
 }
 
@@ -356,116 +172,23 @@ static bool pfwrite(string path, int value) {
 	return pfwrite(path, to_string(value));
 }
 
-static bool pfwrite(string path, unsigned int value) {
-	return pfwrite(path, to_string(value));
-}
-
-static bool pfwritegov(int core, string file, string str) {
-	ostringstream path;
-	ostringstream cpugov_path;
-
-	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq" << "/" << file;
-
-	if (!is_file(path.str())) {
-		return false;
-	}
-
-	return pfwrite(path.str(), str);
-}
-
-static bool pfwritegov(int core, string file, bool flag) {
-	return pfwritegov(core, file, flag ? 1 : 0);
-}
-
-static bool pfwritegov(int core, string file, int value) {
-	return pfwritegov(core, file, to_string(value));
-}
-
-static bool pfwritegov(int core, string file, unsigned int value) {
-	return pfwritegov(core, file, to_string(value));
-}
-
 static bool pfread(string path, int *v) {
-	ifstream file(path);
-	string line;
+	ifstream file;
 
 	file.open(path);
 	if (!file.is_open()) {
+#if LOG_NDEBUG
 		ALOGE("%s: failed to open %s", __func__, path.c_str());
+#endif
 		return false;
 	}
 
-	if (!getline(file, line)) {
-		ALOGE("%s: failed to read from %s", __func__, path.c_str());
-		return false;
-	}
-
-	file.close();
-	*v = stoi(line);
-
-	return true;
-}
-
-/*
-static bool pfread(string path, string &str) {
-	ifstream file(path);
-
-	file.open(path);
-	if (!file.is_open()) {
-		ALOGE("%s: failed to open %s", __func__, path.c_str());
-		return false;
-	}
-
-	if (!getline(file, str)) {
-		ALOGE("%s: failed to read from %s", __func__, path.c_str());
-		return false;
-	}
-
+	file >> *v;
+#if LOG_NDEBUG
+	ALOGI("%s: File read value is %d", __func__, *v);
+#endif
 	file.close();
 	return true;
-}
-*/
-
-// legacy I/O
-static bool pfwrite_legacy(string path, string str) {
-	FILE *file = fopen(path.c_str(), "w");
-	bool ret = true;
-
-	if (file == NULL) {
-		ALOGE("%s: failed to open %s", __func__, path.c_str());
-		return false;
-	}
-
-	fprintf(file, "%s\n", str.c_str());
-
-	if (ferror(file)) {
-		ALOGE("%s: failed to write to %s", __func__, path.c_str());
-		ret = false;
-	}
-
-	fclose(file);
-	return ret;
-}
-
-static bool pfwrite_legacy(string path, int value) {
-	return pfwrite_legacy(path, to_string(value));
-}
-
-// existence-helpers
-static bool is_dir(string path) {
-	struct stat fstat;
-	const char *cpath = path.c_str();
-
-	return !stat(cpath, &fstat) &&
-		(fstat.st_mode & S_IFDIR) == S_IFDIR;
-}
-
-static bool is_file(string path) {
-	struct stat fstat;
-	const char *cpath = path.c_str();
-
-	return !stat(cpath, &fstat) &&
-		(fstat.st_mode & S_IFREG) == S_IFREG;
 }
 
 static struct hw_module_methods_t power_module_methods = {
@@ -486,7 +209,6 @@ struct sec_power_module HAL_MODULE_INFO_SYM = {
 
 		.init = power_init,
 		.powerHint = power_hint,
-		.getFeature = power_get_feature,
 		.setInteractive = power_set_interactive,
 	},
 
