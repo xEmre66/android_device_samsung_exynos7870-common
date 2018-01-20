@@ -32,6 +32,17 @@ on post-fs-data
 # Log data folder
 #   mkdir /data/log 0771 radio system
 
+# C-STATE
+    chown system system /sys/module/cpuidle/parameters/off
+    chmod 0660 /sys/module/cpuidle/parameters/off
+
+# CPU Idle
+    chown system system /sys/module/cpuidle_exynos64/parameters/enable_mask
+
+# Audio I2C node for TFA amp
+    chmod 0660 /dev/i2c-20
+    chown audio audio /dev/i2c-20
+
 # Permissions for gnss
     chmod 0660 /dev/gnss_ipc
     chown system system /dev/gnss_ipc
@@ -253,6 +264,8 @@ setprop ro.mst.support 1
     chown system radio /sys/class/sensors/proximity_sensor/name
     chown system radio /sys/class/sensors/proximity_sensor/thresh_high
     chown system radio /sys/class/sensors/proximity_sensor/thresh_low
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_high
+    chown system radio /sys/class/sensors/proximity_sensor/thresh_detect_low
     chown system radio /sys/class/sensors/proximity_sensor/barcode_emul_en
     chown system radio /sys/class/sensors/proximity_sensor/prox_offset_pass
     chown system radio /sys/class/sensors/proximity_sensor/prox_trim
@@ -625,9 +638,23 @@ setprop ro.mst.support 1
 # Support AP/CP log dump
     chmod 0770 /system/bin/sced
 
+# Switch Device
+    chown system radio /sys/class/sec/switch/vbus_value
+
+# LPM mode for ccic
+    chown system radio /sys/class/sec/ccic/lpm_mode
+    chown system radio /sys/class/sec/ccic/ccic_control_option
+
 # IPSec for VOLTE
     chown root system /dev/socket
     chmod 0775 /dev/socket
+
+# New IMS Stack
+service imsd /system/bin/imsd
+    class main
+    socket imsd stream 0660 system system
+    user root
+    group system radio net_raw inet net_admin
 
 on fs
     mount_all /fstab.samsungexynos7870
@@ -642,18 +669,25 @@ on fs
     chown system system /sys/class/backlight/panel/brightness
 
 # Permissions for LCD
+    chown system radio /sys/class/lcd/panel/manufacture_code
     chown system radio /sys/class/lcd/panel/lcd_type
+    chown system system /sys/class/lcd/panel/siop_enable
     chown system system /sys/class/lcd/panel/temperature
+    chown system radio /sys/class/lcd/panel/power_reduce
     chown system system /sys/class/lcd/panel/lux
     chown system media_rw /sys/class/lcd/panel/adaptive_control
     chown system system /sys/class/lcd/panel/dpui
     chown system system /sys/class/lcd/panel/dpui_dbg
-
+    chown system system /sys/devices/svc/OCTA/SVC_OCTA
+    chown system system /sys/class/lcd/panel/adaptive_control
+    chown system system /sys/class/lcd/panel/alpm
 # Permissions for MDNIE
     chown system media_rw /sys/class/mdnie/mdnie/mode
     chown system media_rw /sys/class/mdnie/mdnie/scenario
     chown system system /sys/class/mdnie/mdnie/accessibility
     chown system system /sys/class/mdnie/mdnie/sensorRGB
+    chown system system /sys/class/mdnie/mdnie/mdnie_ldu
+    chown system system /sys/class/mdnie/mdnie/night_mode
     chown system system /sys/class/mdnie/mdnie/whiteRGB
     chown system system /sys/class/mdnie/mdnie/night_mode
     chown system system /sys/class/mdnie/mdnie/light_notification
@@ -697,6 +731,12 @@ on fs
 # Permissions for TouchScreen
     chown system radio /sys/class/sec/tsp/cmd
     chown system system /sys/class/sec/tsp/input/enabled
+    chown system system /sys/class/sec/tsp/ito_check
+    chown system system /sys/class/sec/tsp/raw_check
+    chown system system /sys/class/sec/tsp/module_id
+    chown system system /sys/class/sec/tsp/multi_count
+    chown system system /sys/class/sec/tsp/wet_mode
+    chown system system /sys/class/sec/tsp/comm_err_count
 
 # Permissions for Touchkey
     chown system radio /sys/class/sec/sec_touchkey/brightness
@@ -717,6 +757,10 @@ on fs
     chmod 0664 /sys/class/input_booster/level
     chmod 0664 /sys/class/input_booster/head
     chmod 0664 /sys/class/input_booster/tail
+chown system radio /sys/class/sec/sec_touchkey/touchkey_light_version
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_light_update
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_light_id_compare
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_light_table_write
 
 # Permissions for gpio_keys
     chown radio system /sys/class/sec/sec_key/wakeup_keys
@@ -769,6 +813,15 @@ on fs
 
 #ARGOSD network_throughput
     chown system system /dev/network_throughput
+# ARGOSD
+service argos-daemon /system/bin/argosd
+    class main
+    user system
+    group system radio
+
+# LPM
+on property:ro.bootmode=charger
+   mount ext4 /dev/block/platform/13540000.dwmmc0/by-name/SYSTEM /system wait ro
 
 on property:ro.bootmode=charger
     wait /dev/block/platform/13540000.dwmmc0/by-name/EFS
