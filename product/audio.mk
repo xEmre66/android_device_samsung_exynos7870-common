@@ -18,8 +18,9 @@
 PRODUCT_PACKAGES += \
     audio.primary.universal7870 \
     audio.a2dp.default \
-    audio.usb.default \
     audio.r_submix.default \
+    audio.usb.default \
+    tinymix \
     libtinycompress
 
 PRODUCT_COPY_FILES += \
