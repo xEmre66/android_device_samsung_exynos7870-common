@@ -215,7 +215,7 @@
 
     <!-- If true, the screen can be rotated via the accelerometer in all 4
          rotations as the default behavior. -->
-    <bool name="config_allowAllRotations">true</bool>
+    <bool name="config_allowAllRotations">false</bool>
 
     <!-- Number of milliseconds to hold a wake lock to ensure that drawing is fully
          flushed to the display while dozing.  This value needs to be large enough
