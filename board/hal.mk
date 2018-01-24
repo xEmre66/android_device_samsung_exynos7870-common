@@ -18,3 +18,6 @@
 TARGET_AUDIOHAL_VARIANT := samsung
 TARGET_POWERHAL_VARIANT := samsung
 TARGET_SEC_FP_HAL_VARIANT := bauth
+
+#Hidl
+DEVICE_MANIFEST_FILE := device/samsung/exynos7870-common/manifest.xml
