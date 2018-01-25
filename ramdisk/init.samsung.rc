@@ -3,10 +3,6 @@
 # This is a common source of Android security bugs.
 #
 
-on init
-
-    ffu
-
 # [ SEC_SELINUX_PORTING_COMMON
     # for audit message
     chown system system /proc/avc_msg
