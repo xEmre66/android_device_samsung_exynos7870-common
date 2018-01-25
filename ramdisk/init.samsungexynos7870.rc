@@ -809,12 +809,6 @@ service start_hci_filter /system/bin/wcnss_filter
     group bluetooth qcom_diag
     disabled
 
-# FINGERPRINT FRAMEWORK : starts fingerprintd
-service fingerprintd /system/bin/fingerprintd
-    class late_start
-    user system
-    group system
-
 on property:ro.multisim.simslotcount=1
     setprop persist.radio.multisim.config ss
 
