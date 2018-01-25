@@ -1,4 +1,4 @@
-# /dev/ttySAC0
+# /dev/ttySAC3
 type bluetooth_device, dev_type;
 
 type bbd_device, dev_type;
@@ -18,9 +18,6 @@ type seiren_device, dev_type;
 # /dev/s5p-smem
 type secmem_device, dev_type;
 
-# /dev/vfsspi
-type fingerprint_device, dev_type;
-
 # efs
 type efs_block_device, dev_type;
 
@@ -31,3 +28,5 @@ type uart_device, dev_type;
 type vfs_device, dev_type;
 
 type batch_io_device, dev_type;
+
+type ttyHS0_device, dev_type;

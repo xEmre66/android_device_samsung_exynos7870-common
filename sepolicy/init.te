@@ -1,5 +1,9 @@
 # Mount debugfs on /sys/kernel/debug.
 allow init debugfs:dir mounton;
+allow init self:capability sys_module;
+
+# mmcblk0p19
+#allow init system_file:file execute_no_trans;
 
 # /dev/block/mmcblk0p[0-9]
 allow init emmcblk_device:blk_file rw_file_perms;
@@ -21,7 +25,6 @@ allow init tee_device:chr_file { write ioctl };
 allow init mif_device:chr_file { write ioctl };
 
 allow init kmsg_device:chr_file write;
-allow init log_device:chr_file write;
 
 allow init property_socket:sock_file write;
 
@@ -33,9 +36,12 @@ allow init camera_device:dir { relabelto };
 allow init debugfs:file write;
 allow init efs_file:dir mounton;
 
-allow init debugfs_trace_marker:file getattr;
-allow init socket_device:sock_file { create setattr };
+# superuser
+allow init su:process { transition rlimitinh siginh noatsecure };
 
-allow init socket_device:sock_file { create setattr unlink };
+# RIL
+allow init socket_device:sock_file { create open read write getattr setattr unlink };
 
-allow init sysfs:dir { write read };
+#allow init vendor_file:file { read open getattr execute map execute_no_trans };
+allow init vendor_file:system module_load;
+allow init uart_device:chr_file { write ioctl };
