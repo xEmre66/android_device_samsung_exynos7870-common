@@ -15,5 +15,5 @@
 #
 
 # Root
-PRODUCT_PACKAGES += \
-    su
+#PRODUCT_PACKAGES += \
+#    su
