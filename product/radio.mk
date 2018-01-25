@@ -20,7 +20,9 @@ PRODUCT_PACKAGES += \
     libprotobuf-cpp-full \
     libsecril-client \
     libsecril-client-sap \
-    modemloader
+    modemloader\
+    android.hardware.radio@1.0 \
+    android.hardware.radio.deprecated@1.0
 
 # IPv6
 PRODUCT_PACKAGES += \
