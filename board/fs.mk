@@ -20,3 +20,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 
 # F2FS support
 TARGET_USERIMAGES_USE_F2FS := true
+
+# New ext4 generation
+TARGET_USES_MKE2FS := true
