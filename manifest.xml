@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Comments, Legal notices, etc. here -->
 <manifest version="1.0" type="device">
+    <!--
+        Camera
+      -->
+    <hal format="hidl">
+        <name>android.hardware.camera.provider</name>
+        <transport arch="32">passthrough</transport>
+        <version>2.4</version>
+        <interface>
+            <name>ICameraProvider</name>
+            <instance>legacy/0</instance>
+        </interface>
+    </hal>
+
+    <!--
+        Configstore
+      -->
+    <hal format="hidl">
+        <name>android.hardware.configstore</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ISurfaceFlingerConfigs</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        DRM
+      -->
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.drm</name>
+        <transport arch="32">passthrough</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IDrmFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 
     <!--
         Fingerprint
@@ -17,11 +56,24 @@
     </hal>
 
     <!--
+        Gatekeeper
+      -->
+    <hal format="hidl">
+        <name>android.hardware.gatekeeper</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IGatekeeper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
         Graphics
       -->
     <hal format="hidl">
         <name>android.hardware.graphics.allocator</name>
-        <transport arch="32+64">passthrough</transport>
+        <transport arch="32">passthrough</transport>
         <impl level="generic"></impl>
         <version>2.0</version>
         <interface>
@@ -32,11 +84,24 @@
 
     <hal format="hidl">
         <name>android.hardware.graphics.mapper</name>
-        <transport arch="32+64">passthrough</transport>
+        <transport arch="32">passthrough</transport>
         <impl level="generic"></impl>
         <version>2.0</version>
         <interface>
             <name>IMapper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <!--
+        GPS
+      -->
+    <hal format="hidl">
+        <name>android.hardware.gnss</name>
+        <transport arch="32">passthrough</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IGnss</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -60,7 +125,7 @@
       -->
     <hal format="hidl">
         <name>android.hardware.gnss</name>
-        <transport arch="32+64">passthrough</transport>
+        <transport arch="32">passthrough</transport>
         <version>1.0</version>
         <interface>
             <name>IGnss</name>
@@ -112,6 +177,7 @@
             <instance>slot1</instance>
         </interface>
     </hal>
+
     <hal format="hidl">
         <name>android.hardware.radio.deprecated</name>
         <transport>hwbinder</transport>
@@ -120,6 +186,39 @@
         <interface>
             <name>IOemHook</name>
             <instance>slot1</instance>
+        </interface>
+    </hal>
+
+    <!--
+        Sound
+      -->
+    <hal format="hidl">
+        <name>android.hardware.soundtrigger</name>
+        <transport>hwbinder</transport>
+        <version>2.0</version>
+        <interface>
+            <name>ISoundTriggerHw</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <hal format="hidl">
+        <name>android.hardware.audio</name>
+        <transport arch="32">passthrough</transport>
+        <version>2.0</version>
+        <interface>
+            <name>IDevicesFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+
+    <hal format="hidl">
+        <name>android.hardware.audio.effect</name>
+        <transport arch="32">passthrough</transport>
+        <version>2.0</version>
+        <interface>
+            <name>IEffectsFactory</name>
+            <instance>default</instance>
         </interface>
     </hal>
 
