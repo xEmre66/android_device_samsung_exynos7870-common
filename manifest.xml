@@ -30,7 +30,6 @@
     <!--
         DRM
       -->
-    </hal>
     <hal format="hidl">
         <name>android.hardware.drm</name>
         <transport arch="32">passthrough</transport>
@@ -116,19 +115,6 @@
         <version>3.0</version>
         <interface>
             <name>IKeystoreService</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-
-    <!--
-        Location
-      -->
-    <hal format="hidl">
-        <name>android.hardware.gnss</name>
-        <transport arch="32">passthrough</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IGnss</name>
             <instance>default</instance>
         </interface>
     </hal>
