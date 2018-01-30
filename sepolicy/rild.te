@@ -39,3 +39,10 @@ allow rild self:capability chown;
 
 allow rild audioserver:dir search;
 allow rild audioserver:file { read open getattr };
+
+allow rild default_prop:property_service set;
+allow rild self:capability { fowner fsetid };
+allow rild sysfs:dir write;
+allow rild init:dir search;
+allow rild init:file { getattr open read };
+allow rild self:capability { dac_override fowner fsetid };

@@ -1,2 +1,3 @@
 allow mediacodec system_file:dir { read open };
 allow mediacodec sysfs:file { read open getattr };
+allow mediaextractor fuse:file { getattr read };

@@ -15,3 +15,7 @@ allow bluetooth bluetooth_prop:property_service set;
 
 #r_dir_file(bluetooth, firmware_file)
 allow bluetooth wcnss_filter:unix_stream_socket connectto;
+
+allow hal_bluetooth_default default_prop:property_service set;
+allow hal_bluetooth_default sysfs:file write;
+allow hal_bluetooth_default uart_device:chr_file { ioctl open read write };
