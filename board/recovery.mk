@@ -16,12 +16,12 @@
 
 #Recovery
 BOARD_HAS_DOWNLOAD_MODE := true
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.samsungexynos7870
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.recovery
 # RECOVERY_VARIANT := twrp
 
 # TWRP
 ifeq ($(RECOVERY_VARIANT),twrp)
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/twrp.fstab
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.recovery
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 TW_THEME := portrait_hdpi
 TARGET_RECOVERY_PIXEL_FORMAT := "ABGR_8888"
