@@ -15,6 +15,7 @@
 #
 
 # Power
+TARGET_POWERHAL_VARIANT := samsung
 PRODUCT_PACKAGES += \
     power.universal7870 \
     android.hardware.power@1.0-impl
